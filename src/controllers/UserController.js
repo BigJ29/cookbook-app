@@ -24,9 +24,36 @@ module.exports = {
       return res.status(400).json({
         message: "Email already exist! Log in instead.",
       });
-      
     } catch (err) {
       throw Error(`Error while registering a new user: ${err}`);
     }
-  }
+  },
+
+  async getAllUsers(req, res) {
+    try {
+      const users = await User.find({});
+      
+      if (users) {
+        return res.json(users);
+      }
+    } catch (error) {
+      return res.status(400).json({
+        message: "We dont have any users yet.",
+      });
+    }
+  },
+
+  async getUserById(req, res) {
+    const { userId } = req.params;
+
+    try {
+      const user = await User.findById(userId);
+      return res.json(user);
+    } catch (error) {
+      return res.status(400).json({
+        message: "User ID does not exist! Resgister instead.",
+      });
+    }
+  },
+  
 };
